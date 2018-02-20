@@ -11,7 +11,7 @@ module.exports.getProduct = async (req, res) => {
       data: null
     });
   }
-  const product = await Product.findById(req.params.productId).exec();
+  const product = await Product.find({_id:req.params.productId,sellerName:req.user.username}).exec();
   if (!product) {
     return res
       .status(404)
@@ -25,7 +25,7 @@ module.exports.getProduct = async (req, res) => {
 };
 
 module.exports.getProducts = async (req, res) => {
-  const products = await Product.find({}).exec();
+  const products = await Product.find({sellerName:req.user.username}).exec();
   res.status(200).json({
     err: null,
     msg: 'Products retrieved successfully.',
@@ -63,7 +63,13 @@ module.exports.createProduct = async (req, res) => {
   delete req.body.createdAt;
   delete req.body.updatedAt;
 
-  const product = await Product.create(req.body);
+  var p = new Product({
+    name : req.body.name,
+    price : req.body.price,
+    sellerName : req.user.username
+  });
+
+  const product = await Product.create(p);
   res.status(201).json({
     err: null,
     msg: 'Product was created successfully.',
@@ -95,8 +101,8 @@ module.exports.updateProduct = async (req, res) => {
   delete req.body.createdAt;
   req.body.updatedAt = moment().toDate();
 
-  const updatedProduct = await Product.findByIdAndUpdate(
-    req.params.productId,
+  const updatedProduct = await Product.findOneAndUpdate(
+    {_id:req.params.productId,sellerName:req.user.username},
     {
       $set: req.body
     },
@@ -122,7 +128,8 @@ module.exports.deleteProduct = async (req, res) => {
       data: null
     });
   }
-  const deletedProduct = await Product.findByIdAndRemove(req.params.productId).exec();
+  const deletedProduct = await Product.findOneAndRemove(
+    {_id:req.params.productId,sellerName:req.user.username}).exec();
   if (!deletedProduct) {
     return res
       .status(404)

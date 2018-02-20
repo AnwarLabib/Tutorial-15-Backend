@@ -16,7 +16,13 @@ const productSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  updatedAt: Date
+  updatedAt: Date,
+  sellerName:{
+    type:String,
+    require:true,
+    trim:true,
+    lowercase:true
+  }
 });
 
 mongoose.model('Product', productSchema);

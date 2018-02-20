@@ -41,11 +41,11 @@ app.use((err, req, res, next) => {
 
 // 404 error handler
 app.use((req, res) => {
-  res.status(404).json({
-    err: null,
-    msg: '404 Not Found',
-    data: null
-  });
+    res.status(404).json({
+      err: null,
+      msg: '404 Not Found',
+      data: null
+    });
 });
 
 module.exports = app;
