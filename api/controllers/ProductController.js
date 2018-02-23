@@ -81,7 +81,7 @@ module.exports.updateProduct = async (req, res) => {
   if (!Validations.isObjectId(req.params.productId)) {
     return res.status(422).json({
       err: null,
-      msg: 'productId parameter must be a valid ObjectId.',
+        msg: 'productId parameter must be a valid ObjectId.',
       data: null
     });
   }

@@ -8,7 +8,8 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    unique : true
   },
   password: {
     type: String,
@@ -39,10 +40,10 @@ UserSchema.methods.generateAuthToken = function () {
   });
 };
 
-UserSchema.statics.findByCredentials = function (email, password) {
+UserSchema.statics.findByCredentials = function (username, password) {
   var User = this;
 
-  return User.findOne({email}).then((user) => {
+  return User.findOne({username}).then((user) => {
     if (!user) {
       return Promise.reject();
     }

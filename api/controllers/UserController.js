@@ -12,18 +12,18 @@ module.exports.createUser = async (req, res)=>{
   user.save().then(() => {
     return user.generateAuthToken();
   }).then((token) => {
-    res.header('x-auth', token).send();
+    res.header('x-auth', token).send({data:user});
   }).catch((e) => {
     res.status(400).send(e);
   });
 }
 
 module.exports.loginUser = async (req, res) => {
-  var body = _.pick(req.body, ['email', 'password']);
+  var body = _.pick(req.body, ['username', 'password']);
 
-  User.findByCredentials(body.email, body.password).then((user) => {
+  User.findByCredentials(body.username, body.password).then((user) => {
     return user.generateAuthToken().then((token) => {
-      res.header('x-auth', token).send(user);
+      res.header('x-auth', token).send({data:user});
     });
   }).catch((e) => {
     res.status(400).send();
