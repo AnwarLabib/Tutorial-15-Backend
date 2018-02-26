@@ -8,6 +8,7 @@ const express = require('express'),
 
 //-------------------------------Product Routes-----------------------------------
 router.get('/product/getProducts',authenticate, asyncMiddleware(productCtrl.getProducts));
+router.get('/product/getAllProducts', asyncMiddleware(productCtrl.getAllProducts));
 router.get('/product/getProduct/:productId',authenticate, asyncMiddleware(productCtrl.getProduct));
 router.get(
   '/product/getProductsBelowPrice/:price',authenticate,

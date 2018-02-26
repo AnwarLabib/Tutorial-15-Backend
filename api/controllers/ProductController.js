@@ -33,6 +33,15 @@ module.exports.getProducts = async (req, res) => {
   });
 };
 
+module.exports.getAllProducts = async (req, res) => {
+  const products = await Product.find({}).exec();
+  res.status(200).json({
+    err: null,
+    msg: 'Products retrieved successfully.',
+    data: products
+  });
+};
+
 module.exports.getProductsBelowPrice = async (req, res) => {
   const products = await Product.find({
     price: {
