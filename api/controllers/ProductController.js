@@ -129,6 +129,52 @@ module.exports.updateProduct = async (req, res) => {
   });
 };
 
+
+module.exports.addToCart = async (req, res) => {
+  var user = req.user;
+  // console.log(req.params.productId); //correct
+  // console.log(user._id); //correct
+
+  if (!Validations.isObjectId(req.params.productId)) {
+    return res.status(422).json({
+      err: null,
+        msg: 'productId parameter must be a valid ObjectId.',
+      data: null
+    });
+  }
+
+  // Security Check
+  delete req.body.createdAt;
+  req.body.updatedAt = moment().toDate();
+
+
+  //now add the user id to the array of addedToCart in the product itself
+  var addedNameToCart = await Product.update(
+    {_id: req.params.productId},
+    {
+      $push: { addedInCarts: {
+        _id: user._id
+      }}
+    }).exec();
+//  console.log(product);
+
+
+
+  //check if it has updated the product, if not, yob2a hwa mal2ahosh fa send 404 not found
+  if (!addedNameToCart) {
+    return res
+      .status(404)
+      .json({ err: null, msg: 'Product not found.', data: null });
+  }
+  //send the success status code and message
+  return res.status(200).json({
+    err: null,
+    msg: 'Product was added to cart successfully.',
+    data: addedNameToCart
+  });
+
+};
+
 module.exports.deleteProduct = async (req, res) => {
   if (!Validations.isObjectId(req.params.productId)) {
     return res.status(422).json({

@@ -22,7 +22,13 @@ const productSchema = mongoose.Schema({
     require:true,
     trim:true,
     lowercase:true
+  },
+  addedInCarts: [{
+    _id: String
   }
+  ]   //array of users who added this item to the cart
+
+
 });
 
 mongoose.model('Product', productSchema);
