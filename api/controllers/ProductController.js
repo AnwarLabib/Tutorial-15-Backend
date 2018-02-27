@@ -33,13 +33,13 @@ module.exports.getProducts = async (req, res) => {
   });
 };
 
-module.exports.getCart = async (req, res) => {
+module.exports.getCart = async (req, res) => { //gets all items in cart of logged in user
     var user = req.user;
-  const products = await Product.find({},
+  const products = await Product.find(
   {
     addedInCarts: {
       $elemMatch: {
-        _id: user._id
+        _id: user._id.toString()
       }
     }
   }).exec();
