@@ -33,6 +33,48 @@ module.exports.getProducts = async (req, res) => {
   });
 };
 
+module.exports.getCart = async (req, res) => {
+    var user = req.user;
+  const products = await Product.find({},
+  {
+    addedInCarts: {
+      $elemMatch: {
+        _id: user._id
+      }
+    }
+  }).exec();
+
+  res.status(200).json({
+    err: null,
+    msg: 'Products retrieved successfully.',
+    data: products
+  });
+};
+
+module.exports.removeFromCart = async (req, res) => {
+  var user = req.user;
+
+  const removedFromCart = await Product.update({
+      $pull : {
+          addedInCarts: {
+              _id: user._id.toString()
+          }
+      }
+  }).exec();
+
+  if (!removedFromCart) { //unnecessary check
+    return res
+      .status(404)
+      .json({ err: null, msg: 'Product not found.', data: null });
+  }
+
+  res.status(200).json({ //if nModifed: 0 in the respond, ya3ny kda hwa mafeesh asln item fl cart hwa 7awel yemsa7.. remove it from front end b2a aw refresh his page
+    err: null,
+    msg: 'Products removed from cart',
+    data: removedFromCart
+  });
+};
+
 module.exports.getAllProducts = async (req, res) => {
   const products = await Product.find({}).exec();
   res.status(200).json({

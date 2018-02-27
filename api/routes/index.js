@@ -17,6 +17,7 @@ router.get(
 router.post('/product/createProduct',authenticate, asyncMiddleware(productCtrl.createProduct));
 router.patch('/product/addToCart/:productId',authenticate, asyncMiddleware(productCtrl.addToCart));
 router.get('/product/getCart',authenticate, asyncMiddleware(productCtrl.getCart)); //get all products in cart of a specific user
+router.delete('/product/removeFromCart/:productId',authenticate, asyncMiddleware(productCtrl.removeFromCart));
 router.patch('/product/updateProduct/:productId',authenticate, asyncMiddleware(productCtrl.updateProduct));
 router.delete('/product/deleteProduct/:productId',authenticate, asyncMiddleware(productCtrl.deleteProduct));
 
