@@ -205,7 +205,7 @@ module.exports.addToCart = async (req, res) => {
   //check if it has updated the product, if not, yob2a hwa mal2ahosh fa send 404 not found
   if (!addedNameToCart) {
     return res
-      .status(404)
+      .status(404)  
       .json({ err: null, msg: 'Product not found.', data: null });
   }
   //send the success status code and message
