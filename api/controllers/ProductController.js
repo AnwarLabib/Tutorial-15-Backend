@@ -54,7 +54,7 @@ module.exports.getCart = async (req, res) => { //gets all items in cart of logge
 module.exports.removeFromCart = async (req, res) => {
   var user = req.user;
 
-  const removedFromCart = await Product.update({
+  const removedFromCart = await Product.update({_id:req.params.productId},{
       $pull : {
           addedInCarts: {
               _id: user._id.toString()
