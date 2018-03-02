@@ -20,6 +20,7 @@ router.get('/product/getCart',authenticate, asyncMiddleware(productCtrl.getCart)
 router.delete('/product/removeFromCart/:productId',authenticate, asyncMiddleware(productCtrl.removeFromCart));
 router.patch('/product/updateProduct/:productId',authenticate, asyncMiddleware(productCtrl.updateProduct));
 router.delete('/product/deleteProduct/:productId',authenticate, asyncMiddleware(productCtrl.deleteProduct));
+router.delete('/product/clearCart',authenticate, asyncMiddleware(productCtrl.clearCart));
 
 router.post('/user/createUser',userCtrl.createUser);
 router.post('/user/loginUser', userCtrl.loginUser);

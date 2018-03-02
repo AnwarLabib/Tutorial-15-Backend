@@ -75,6 +75,33 @@ module.exports.removeFromCart = async (req, res) => {
   });
 };
 
+module.exports.clearCart = async (req, res) => {
+   var user = req.user;
+
+   const removedFromCart = await Product.updateMany({
+     addedInCarts: {
+       _id: user._id.toString()
+   }},{
+       $pull : {
+           addedInCarts: {
+               _id: user._id.toString()
+           }
+       }
+   }).exec();
+
+   if (!removedFromCart) { //unnecessary check
+     return res
+       .status(404)
+       .json({ err: null, msg: 'Product not found.', data: null });
+   }
+
+   res.status(200).json({ //if nModifed: 0 in the respond, ya3ny kda hwa mafeesh asln item fl cart hwa 7awel yemsa7.. remove it from front end b2a aw refresh his page
+     err: null,
+     msg: 'Products removed from cart',
+     data: removedFromCart
+   });
+};
+
 module.exports.getAllProducts = async (req, res) => {
   const products = await Product.find({}).exec();
   res.status(200).json({
@@ -205,7 +232,7 @@ module.exports.addToCart = async (req, res) => {
   //check if it has updated the product, if not, yob2a hwa mal2ahosh fa send 404 not found
   if (!addedNameToCart) {
     return res
-      .status(404)  
+      .status(404)
       .json({ err: null, msg: 'Product not found.', data: null });
   }
   //send the success status code and message
